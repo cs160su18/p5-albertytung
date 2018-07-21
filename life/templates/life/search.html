@@ -21,8 +21,8 @@
       
    
       
-      <a href="index"> index </a> <br>
-      <a href="index"> to index</a>
+      <a href="index"> Back to homepage</a> <br>
+
       <form method="post">
       {% csrf_token %}
       {{ form }}
@@ -30,9 +30,24 @@
    
     <input type="submit" value="Submit">
     </form>
-
-      <a href="results"> results </a> <br>
     
+   
+      
+    <h3>
+      {{title}}
+    </h3>
+    {% for curStep in steps %}
+    Recipe <br>
+     <ol>
+       
+        <li> {{curStep.stepOne}} </li>
+       <li> {{curStep.stepTwo}} </li>
+       <li> {{curStep.stepThree}} </li>
+      
+       
+     </ol>
+    {% endfor %}
+   
     </p>
 
 	</body>

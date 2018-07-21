@@ -15,17 +15,39 @@ def results(request):
     
 
 def search(request):
+    curTitle = ""
+    steps = ""
+    
+    print("going through search")
     if request.method == 'POST':
-        form = RecipeForm(request.POST)
+        form = SearchForm(request.POST)
+        print("entered search post request")
         if form.is_valid():
-            title = form.cleaned_data['title']
+            print("form is valid")
+            curTitle = form.cleaned_data['title']
+            print("the title is: " + curTitle)
             # render the proper page
             
-    context { 
-      'recipes' : recipes
-    }
+            curRecipe = None
+    
+            matchingRecipes = Recipe.objects.filter(title=curTitle)
+            print("possibly matching recipes")
+            if matchingRecipes:
+              print("definitely matching recipes")
+              curRecipe = matchingRecipes[0]
+              curRecipeId = curRecipe.id
+              
+              steps = curRecipe.steps_set.all()
+              print("The steps for the recipe are: " + str(steps))
+              
     form = SearchForm()
-    return render(request, 'life/search.html', {'form' : form})
+    context =  { 
+      'title' : curTitle,
+      'form' : form,
+      'steps' : steps
+    }
+    print("The context" + str(context))
+    return render(request, 'life/search.html', context)
   
 def recipe(request):
     if request.method == 'POST':
@@ -37,8 +59,10 @@ def recipe(request):
             # store the data
             
             # check if existing
-            existingRecipe = Recipe.objects.filter(name=curTitle)
+            existingRecipe = Recipe.objects.filter(title=curTitle)
             if not existingRecipe:
+              print("Creating a new recipe; title: " + curTitle + " curDescription: " + curDescription)
+              
               newRecipe = Recipe(title=curTitle, description=curDescription)
               # if not existing, create an entry
               newRecipe.save()
@@ -55,11 +79,13 @@ def steps(request):
             curStepTwo = form.cleaned_data['stepTwo']
             curStepThree = form.cleaned_data['stepThree']
             
-            existingRecipe = Recipe.objects.filter(name=curTitle)
+            existingRecipe = Recipe.objects.filter(title=curTitle)[0]
             
             if existingRecipe:
+            
               existingRecipeId = existingRecipe.id
-              newSteps = Steps(stepOne=curStepOne, stepTwo=curStepTwo, stepThree=curStepThree, recipeKey=existingRecipeId)
+              print("Creating a new recipe" + curStepOne + " " + curStepTwo + " " + curStepThree)
+              newSteps = Steps(stepOne=curStepOne, stepTwo=curStepTwo, stepThree=curStepThree, recipeKey=existingRecipe)
             # if existing, do nothing
           
             # if not existing, create an entry
