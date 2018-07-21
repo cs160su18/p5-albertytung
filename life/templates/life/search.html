@@ -16,14 +16,23 @@
 	<body>
 		<!-- Your layout here -->
     <p>
-      Welcome to index <br>
+      Welcome to search <br>
       
       
    
       
-      <a href="search"> search </a> <br>
-      <a href="recipe"> submit recipe </a> <br>
-      <a href="steps"> submit steps </a> <br>
+      <a href="index"> index </a> <br>
+      <a href="index"> to index</a>
+      <form method="post">
+      {% csrf_token %}
+      {{ form }}
+     
+   
+    <input type="submit" value="Submit">
+    </form>
+
+      <a href="results"> results </a> <br>
+    
     </p>
 
 	</body>

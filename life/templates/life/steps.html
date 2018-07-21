@@ -4,7 +4,7 @@
 
 <html>
 	<head>
-		<title>Index</title>
+		<title>Input</title>
 
 		<link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="{% static '/life/vendor/bootstrap/css/bootstrap.css' %}" />
@@ -14,17 +14,21 @@
 		<script src="{% static '/life/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
 	</head>
 	<body>
+    
 		<!-- Your layout here -->
-    <p>
-      Welcome to index <br>
-      
-      
+    <a href="index"> to index</a>
+    <form method="post">
+      {% csrf_token %}
+      <!-- {{ form }} -->
+       {% for field in form %}
+          <p>{{ field.label_tag }} {{ field }}</p>
+      {% endfor %}
+     
    
-      
-      <a href="search"> search </a> <br>
-      <a href="recipe"> submit recipe </a> <br>
-      <a href="steps"> submit steps </a> <br>
-    </p>
+     
+   
+    <input type="submit" value="Submit">
+    </form>
 
 	</body>
 </html>
